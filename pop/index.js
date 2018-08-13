@@ -10,6 +10,7 @@ import TileSprite from './TileSprite'
 import Game from './Game'
 import Camera from './Camera'
 import deadInTracks from './movement/deadInTracks'
+import wallslide from './movement/wallslide'
 import math from './utils/math'
 import entity from './utils/entity'
 
@@ -27,5 +28,6 @@ export default {
     Text,
     Texture,
     TileMap,
-    TileSprite
+    TileSprite,
+    wallslide
 }

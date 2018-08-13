@@ -1,5 +1,5 @@
 import pop from '../../pop/'
-const { Texture, TileSprite, deadInTracks } = pop
+const { Texture, TileSprite, wallslide } = pop
 
 const texture = new Texture('res/img/bravedigger-tiles.png')
 
@@ -24,7 +24,7 @@ class Player extends TileSprite {
     let { x, y } = controls
     const xo = x * dt * speed
     const yo = y * dt * speed
-    const r = deadInTracks(this, map, xo, yo)
+    const r = wallslide(this, map, xo, yo)
     if (r.x !== 0 && r.y !== 0) {
       r.x /= Math.sqrt(2)
       r.y /= Math.sqrt(2)
