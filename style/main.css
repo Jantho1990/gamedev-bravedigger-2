@@ -3,8 +3,11 @@ body {
 }
 
 #board {
-    width: 640px;
-    height: 480px;
-    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#board canvas {
     background: hsl(0, 80%, 70%);
 }
