@@ -1,6 +1,7 @@
 import pop from '../pop/'
-const { Container, entity } = pop
+const { Container, entity, math } = pop
 import Level from './Level'
+import Bat from './entities/Bat'
 import Player from './entities/Player'
 import Pickup from './entities/Pickup'
 
@@ -11,13 +12,26 @@ class GameScreen extends Container {
     this.h = game.h
     const map = new Level(game.w, game.h)
     const player = new Player(controls, map)
-    player.pos.x = 48
-    player.pos.y = 48
+    player.pos = map.findFreeSpot()
 
     this.map = this.add(map)
     this.player = this.add(player)
+
+    const bats = this.add(new Container())
+    for (let i = 0; i < 5; i++) {
+      this.randoBat(bats.add(new Bat()))
+    }
+    this.bats = this.add(bats)
+
     this.pickups = this.add(new Container())
     this.populate()
+  }
+
+  randoBat(bat) {
+    bat.pos.x = this.w * math.randf(1, 2)
+    bat.pos.y = math.rand(10) * 32
+    bat.speed = math.rand(150, 230)
+    return bat
   }
 
   populate() {
@@ -30,7 +44,17 @@ class GameScreen extends Container {
 
   update(dt, t) {
     super.update(dt, t)
-    const { player, pickups } = this
+    const { bats, player, pickups } = this
+
+    bats.map(bat => {
+      if (entity.hit(player, bat)) {
+        player.gameOver = true
+      }
+      if (bat.pos.x < -32) {
+        this.randoBat(bat)
+      }
+    })
+
     // Collect pickup!
     entity.hits(player, pickups, pickup => {
       pickup.dead = true

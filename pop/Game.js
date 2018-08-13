@@ -10,7 +10,7 @@ class Game {
     this.h = h
     this.renderer = new CanvasRenderer(w, h)
     document.querySelector(parent).appendChild(this.renderer.view)
-    this.scene = new Container() 
+    this.scene = new Container()
   }
 
   run(gameUpdate = () => {}) {
