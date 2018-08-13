@@ -6,4 +6,5 @@ body {
     width: 640px;
     height: 480px;
     margin: auto;
+    background: hsl(0, 80%, 70%);
 }
