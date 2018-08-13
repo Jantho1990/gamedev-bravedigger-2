@@ -62,6 +62,24 @@ class Level extends TileMap {
       texture
     )
   }
+
+  findFreeSpot() {
+    const { mapW, mapH } = this
+    let found = false
+    let x, y
+    let failsafe = 0
+    while (!found) {
+      x = math.rand(mapW)
+      y = math.rand(mapH)
+      const { frame } = this.tileAtMapPos({ x, y })
+      if (frame.walkable) {
+        found = true
+      } else if (failsafe++ > 5000) {
+        break
+      }
+    }
+    return this.mapToPixelPos({ x, y })
+  }
 }
 
 export default Level
