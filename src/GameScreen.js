@@ -16,21 +16,21 @@ class GameScreen extends Container {
 
     this.map = this.add(map)
     this.player = this.add(player)
+    this.pickups = this.add(new Container())
 
     const bats = this.add(new Container())
     for (let i = 0; i < 5; i++) {
-      this.randoBat(bats.add(new Bat()))
+      this.randoBat(bats.add(new Bat(() => map.findFreeSpot())))
     }
     this.bats = this.add(bats)
 
-    this.pickups = this.add(new Container())
     this.populate()
   }
 
   randoBat(bat) {
     bat.pos.x = this.w * math.randf(1, 2)
     bat.pos.y = math.rand(10) * 32
-    bat.speed = math.rand(150, 230)
+    bat.speed = math.rand(100, 150)
     return bat
   }
 
