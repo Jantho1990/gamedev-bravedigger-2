@@ -4,7 +4,7 @@ const { Texture, TileSprite, math } = pop
 const texture = new Texture('res/img/bravedigger-tiles.png')
 
 class Bullet extends TileSprite {
-  constrcutor(dir, speed = 100) {
+  constructor(dir, speed = 100) {
     super(texture, 48, 48)
     this.hitBox = {
       x: 24,

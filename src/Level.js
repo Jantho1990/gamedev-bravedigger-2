@@ -63,7 +63,7 @@ class Level extends TileMap {
     )
   }
 
-  findFreeSpot() {
+  findFreeSpot(isFree = true) {
     const { mapW, mapH } = this
     let found = false
     let x, y
@@ -72,7 +72,7 @@ class Level extends TileMap {
       x = math.rand(mapW)
       y = math.rand(mapH)
       const { frame } = this.tileAtMapPos({ x, y })
-      if (frame.walkable) {
+      if (!!frame.walkable == isFree) {
         found = true
       } else if (failsafe++ > 5000) {
         break
