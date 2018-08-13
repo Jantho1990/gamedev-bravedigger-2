@@ -1,3 +1,11 @@
+export function angle(a, b) {
+  const dx = a.x - b.x
+  const dy = a.y - b.y
+  const angle = Math.atan2(dy, dx)
+
+  return angle
+}
+
 export function clamp(x, min, max) {
   return Math.max(min, Math.min(x, max))
 }
@@ -30,6 +38,7 @@ export function randOneFrom(items) {
 }
 
 export default {
+  angle,
   rand,
   randf,
   randOneIn,

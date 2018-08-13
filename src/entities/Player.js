@@ -22,6 +22,7 @@ class Player extends TileSprite {
     const { pos, controls, map, speed, gameOver } = this
 
     if (gameOver) {
+      this.speed = 0
       this.rotation += dt * 5
       this.pivot.y = 16
       this.pivot.x = 16
