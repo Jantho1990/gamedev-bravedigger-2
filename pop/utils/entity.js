@@ -15,6 +15,10 @@ export function addDebug(e) {
   return e
 }
 
+export function angle(a, b) {
+  return math.angle(center(a), center(b))
+}
+
 export function bounds(entity) {
   const { w, h, pos, hitBox } = entity
   const hit = hitBox || { x: 0, y: 0, w, h }
@@ -64,6 +68,7 @@ export function hits(entity, container, hitCallback) {
 
 export default {
   addDebug,
+  angle,
   bounds,
   center,
   distance,
