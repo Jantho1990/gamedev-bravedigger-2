@@ -10,7 +10,7 @@ class Level extends TileMap {
     const mapH = Math.floor(h / tileSize)
 
     const tileIndexes = [
-      { id: 'empty', x: 1, y: 2 },
+      { id: 'empty', x: 1, y: 2, walkable: true },
       { id: 'wall', x: 2, y: 2 },
       { id: 'wall_end', x: 3, y: 2 }
     ]
