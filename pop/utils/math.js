@@ -17,6 +17,13 @@ export function distance(a, b) {
   return Math.sqrt(dx * dx + dy * dy)
 }
 
+export function direction(angle) {
+  return {
+    x: Math.cos(angle),
+    y: Math.sin(angle)
+  }
+}
+
 export function rand(min, max) {
   return Math.floor(randf(min, max))
 }
@@ -39,10 +46,11 @@ export function randOneFrom(items) {
 
 export default {
   angle,
+  clamp,
+  distance,
+  direction,
   rand,
   randf,
-  randOneIn,
   randOneFrom,
-  clamp,
-  distance
+  randOneIn
 }

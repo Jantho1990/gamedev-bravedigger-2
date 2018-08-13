@@ -18,13 +18,9 @@ class Totem extends TileSprite {
   fireAtTarget() {
     const { target, onFire } = this
     const totemPos = entity.center(this)
-    const targetPos = entity.center(target)
-    const angle = math.angle(targetPos, totemPos)
-
-    const x = Math.cos(angle)
-    const y = Math.sin(angle)
-
-    const bullet = new Bullet({ x, y }, 300)
+    
+    const aim = entity.aim(target, this)
+    const bullet = new Bullet(aim, 300)
     bullet.pos.x = totemPos.x - bullet.w / 2
     bullet.pos.y = totemPos.y - bullet.h / 2
 
