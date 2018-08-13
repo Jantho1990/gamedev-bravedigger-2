@@ -18,7 +18,7 @@ class Level extends TileMap {
     const getIdx = id => tileIndexes.indexOf(getTile(id))
 
     // Make a random dungeon
-    const level = Array(mapW * mapH).fill(0)
+    const level = Array(mapW * mapH).fill(getIdx('empty'))
     for (let y = 0; y < mapH; y++) {
       for (let x = 0; x < mapW; x++) {
         // Map borders
@@ -38,7 +38,7 @@ class Level extends TileMap {
           [1, 0], // east
           [-1, 0] // west
         ])
-        level[y + yo * mapW + (x + xo)] = getIdx('wall')
+        level[(y + yo) * mapW + (x + xo)] = getIdx('wall')
       }
     }
 
