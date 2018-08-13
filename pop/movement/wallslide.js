@@ -2,6 +2,7 @@ import entity from '../utils/entity'
 
 export default function wallslide(ent, map, x = 0, y = 0) {
   let tiles
+  let tileEdge
   const bounds = entity.bounds(ent)
 
   // Final amounts of movement to allow
@@ -13,12 +14,16 @@ export default function wallslide(ent, map, x = 0, y = 0) {
     tiles = map.tilesAtCorners(bounds, 0, yo) // temporarily assume no horizontal movement
     const [tl, tr, bl, br] = tiles.map(t => t && t.frame.walkable)
 
-    // Hit your head or your feet
-    if (
-      (y < 0 && !(tl && tr)) ||
-      (y > 0 && !(bl && br))
-    ) {
-      yo = 0
+    // Hit your head
+    if (y < 0 && !(tl && tr)) {
+      tileEdge = tiles[0].pos.y + tiles[0].h // top-left tile y-coordinate plus height of tile
+      yo = tileEdge - bounds.y // edge minus entity top y-coordinate
+    }
+
+    // Hit your feet
+    if (y > 0 && !(bl && br)) {
+      tileEdge = tiles[2].pos.y - 1 // bottom-left tile y-coordinate minus 1 pixel
+      yo = tileEdge - (bounds.y + bounds.h) // minus offset of bounds because we calculate from top-left
     }
   }
 
@@ -27,12 +32,16 @@ export default function wallslide(ent, map, x = 0, y = 0) {
     tiles = map.tilesAtCorners(bounds, xo, yo)
     const [tl, tr, bl, br] = tiles.map(t => t && t.frame.walkable)
 
-    // Hit left or right edge
-    if (
-      (x < 0 && !(tl && bl)) ||
-      (x > 0 && !(tr && br))
-    ) {
-      xo = 0
+    // Hit left edge
+    if (x < 0 && !(tl && bl)) {
+      tileEdge = tiles[0].pos.x + tiles[0].w // top-left tile x-coordinate plus width of tile
+      xo = tileEdge - bounds.x // right edge of top-left tile minus left edge of entity bounds
+    }
+
+    // Hit right edge
+    if (x > 0 && !(tr && br)) {
+      tileEdge = tiles[1].pos.x - 1 // top-right tile x-coordinate minus 1 pixel
+      xo = tileEdge - (bounds.x + bounds.w) // tile edge minus offset of entity bounds width
     }
   }
 
