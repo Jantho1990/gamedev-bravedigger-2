@@ -22,5 +22,8 @@
     "babel-preset-env": "^1.6.1",
     "babelify": "^8.0.0",
     "budo": "^11.2.0"
+  },
+  "dependencies": {
+    "easystarjs": "^0.4.3"
   }
 }
