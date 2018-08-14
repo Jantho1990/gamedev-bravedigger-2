@@ -1,5 +1,5 @@
 import pop from '../pop/'
-const { Container, entity, math, Text } = pop
+const { Container, entity, math, State, Text } = pop
 import Level from './Level'
 import Bat from './entities/Bat'
 import Player from './entities/Player'
@@ -16,6 +16,9 @@ class GameScreen extends Container {
     const map = new Level(game.w, game.h)
     const player = new Player(controls, map)
     player.pos = map.findFreeSpot()
+    player.pos.y -= 1
+
+    this.state = new State('READY')
 
     this.map = this.add(map)
     this.player = this.add(player)
@@ -48,8 +51,10 @@ class GameScreen extends Container {
   }
 
   randoBat(bat) {
-    bat.pos.x = this.w * math.randf(1, 2)
-    bat.pos.y = math.rand(10) * 32
+    const { w, h } = this
+    const angle = math.randf(Math.PI * 2)
+    bat.pos.x = Math.cos(angle) * 300 + w / 2
+    bat.pos.y = Math.sin(angle) * 300 + h / 2
     bat.speed = math.rand(100, 150)
     return bat
   }
@@ -63,22 +68,47 @@ class GameScreen extends Container {
   }
 
   update(dt, t) {
-    super.update(dt, t)
-    const { baddies, player, pickups } = this
+    const { controls, player, state } = this
 
-    baddies.map(bat => {
-      if (entity.hit(player, bat)) {
-        player.gameOver = true
-      }
-      if (bat.pos.x < -32) {
-        this.randoBat(bat)
+    switch (state.get()) {
+      case 'READY':
+        if (state.first) {
+          this.scoreText.text = 'GET READY'
+        }
+        if (state.time > 2) {
+          this.scoreText.text = '0'
+          state.set('PLAYING')
+        }
+        break
+      
+      case 'PLAYING':
+        super.update(dt, t)
+        this.updatePlaying()
+        break
+      
+      case 'GAME OVER':
+        if (state.first) {
+          player.gameOver = true
+          this.scoreText.text = `DEAD. Score: ${this.score}`
+        }
+        if (this.controls.action) {
+          this.onGameOver()
+        }
+        super.update(dt, t)
+    }
+
+    state.update(dt)
+  }
+
+  updatePlaying() {
+    const { baddies, player, pickups, state } = this
+
+    baddies.map(baddie => {
+      if (entity.hit(player, baddie)) {
+        state.set('GAME OVER')
+        baddie.dead = true
       }
     })
-
-    // If player is dead, wait for spacebar
-    if (player.gameOver && this.controls.action) {
-      this.onGameOver()
-    }
 
     // Collect pickup!
     entity.hits(player, pickups, pickup => {

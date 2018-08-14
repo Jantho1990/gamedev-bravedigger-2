@@ -1,5 +1,5 @@
 import pop from '../../pop/'
-const { Texture, TileSprite, entity, math } = pop
+const { Texture, TileSprite, entity, math, State } = pop
 
 const texture = new Texture('res/img/bravedigger-tiles.png')
 
@@ -29,7 +29,7 @@ class Bat extends TileSprite {
     this.target = target
     this.waypoint = null
 
-    this.state = states.ATTACK
+    this.state = new State(states.ATTACK)
   }
 
   update(dt, t) {
@@ -42,12 +42,12 @@ class Bat extends TileSprite {
     let waypointAngle
     let waypointDistance
 
-    switch (state) {
+    switch (state.get()) {
       case states.ATTACK:
         xo = Math.cos(angle) * speed * dt
         yo = Math.sin(angle) * speed * dt
         if (distance < 60) {
-          this.state = states.EVADE
+          state.set(states.EVADE)
         }
         break
       case states.EVADE:
@@ -55,13 +55,13 @@ class Bat extends TileSprite {
         yo = -Math.sin(angle) * speed * dt
         if (distance > 120) {
           if (math.randOneIn(2)) {
-            this.state = states.WANDER
+            state.set(states.WANDER)
             this.waypoint = {
               x: pos.x + math.rand(-200, 200),
               y: pos.y + math.rand(-200, 200)
             }
           } else {
-            this.state = states.ATTACK
+            state.set(states.ATTACK)
           }
         }
         break
@@ -72,7 +72,7 @@ class Bat extends TileSprite {
         xo = Math.cos(waypointAngle) * speed * dt
         yo = Math.cos(waypointAngle) * speed * dt
         if (waypointDistance < 60) {
-          this.state = states.EVADE
+          state.set(states.EVADE)
         }
         break
       default:
@@ -85,6 +85,8 @@ class Bat extends TileSprite {
     pos.y += Math.sin((t + speed) * 10) * speed * dt // bob as entity flies
 
     this.frame.x = ((t / 0.1) | 0) % 2 + 3 // animation for bat
+
+    state.update(dt)
   }
 }
 
