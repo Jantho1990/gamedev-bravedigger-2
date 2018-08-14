@@ -99,7 +99,7 @@ class GameScreen extends Container {
           player.gameOver = true
           this.scoreText.text = `DEAD. Score: ${this.score}`
         }
-        if (this.controls.action) {
+        if (player.gameOver && this.controls.action) {
           this.onGameOver()
         }
         super.update(dt, t)

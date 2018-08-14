@@ -3,6 +3,9 @@ const { Texture, TileSprite, wallslide } = pop
 
 const texture = new Texture('res/img/bravedigger-tiles.png')
 
+let dbgFirst = true
+let dbgCt = 0
+
 class Player extends TileSprite {
   constructor(controls, map) {
     super(texture, 48, 48)
@@ -16,16 +19,22 @@ class Player extends TileSprite {
     }
     this.speed = 210
     this.anchor = { x: 0, y: 0 }
+    this.frame.x = 4
   }
 
   update(dt, t) {
     const { pos, controls, map, speed, gameOver } = this
 
     if (gameOver) {
-      // TODO: Figure out why diagonal movement causes this spiral to be exaggerated
+      // TODO: Figure out why moving right prior to death causes this spiral to be exaggerated
+      this.anchor.x = 0
+      this.pivot.y = 24
+      this.pivot.x = 24
       this.rotation += dt * 5
-      this.pivot.y = 16
-      this.pivot.x = 16
+      if (dbgFirst) {
+        if (dbgCt++ > 5) dbgFirst = false
+        console.log('Anchor:', this.anchor, 'Pivot:', this.pivot, 'Rotation:', this.rotation)
+      }
       return
     }
 
