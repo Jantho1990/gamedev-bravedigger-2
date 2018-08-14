@@ -2,6 +2,7 @@ import pop from '../pop/'
 const { Container, entity, math, State, Text } = pop
 import Level from './Level'
 import Bat from './entities/Bat'
+import Ghost from './entities/Ghost'
 import Player from './entities/Player'
 import Pickup from './entities/Pickup'
 import Totem from './entities/Totem'
@@ -37,6 +38,13 @@ class GameScreen extends Container {
       t.pos.x = x
       t.pos.y = y
     }
+
+    // Add a ghost
+    const ghost = this.add(new Ghost(player, map))
+    ghost.pos.x = 100
+    ghost.pos.y = 100
+    ghost.findPath()
+    this.ghost = ghost
 
     this.populate()
     this.score = 0
@@ -101,7 +109,7 @@ class GameScreen extends Container {
   }
 
   updatePlaying() {
-    const { baddies, player, pickups, state } = this
+    const { baddies, ghost, player, pickups, state } = this
 
     baddies.map(baddie => {
       if (entity.hit(player, baddie)) {
@@ -109,6 +117,10 @@ class GameScreen extends Container {
         baddie.dead = true
       }
     })
+
+    if (entity.hit(player, ghost)) {
+      state.set('GAME OVER')
+    }
 
     // Collect pickup!
     entity.hits(player, pickups, pickup => {
