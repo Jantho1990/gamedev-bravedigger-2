@@ -1,5 +1,6 @@
 import pop from '../pop/'
 const { TileMap, Texture, math } = pop
+import EasyStar from 'easystarjs'
 
 const texture = new Texture('../res/img/bravedigger-tiles.png')
 
@@ -61,6 +62,23 @@ class Level extends TileMap {
       tileSize,
       texture
     )
+
+    // Translate 1D level into 2D pathfinder array
+    const grid = []
+    for (let i = 0; i < level.length; i+= mapW) {
+      grid.push(level.slice(i, i + mapW))
+    }
+
+    // Create path finding
+    const path = new EasyStar.js()
+    path.setGrid(grid)
+    // Get walkable tiles index
+    const walkables = tileIndexes
+      .map(({ walkable }, i) => (walkable ? i : -1))
+      .filter(i => i !== -1)
+    path.setAcceptableTiles(walkables)
+
+    this.path = path
   }
 
   findFreeSpot(isFree = true) {
