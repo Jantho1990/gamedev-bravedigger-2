@@ -70,7 +70,7 @@ class Bat extends TileSprite {
         waypointDistance = math.distance(pos, waypoint)
         
         xo = Math.cos(waypointAngle) * speed * dt
-        yo = Math.cos(waypointAngle) * speed * dt
+        yo = Math.sin(waypointAngle) * speed * dt
         if (waypointDistance < 60) {
           state.set(states.EVADE)
         }
