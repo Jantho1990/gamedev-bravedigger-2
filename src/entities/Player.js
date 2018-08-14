@@ -26,7 +26,7 @@ class Player extends TileSprite {
     const { pos, controls, map, speed, gameOver } = this
 
     if (gameOver) {
-      // TODO: Figure out why moving right prior to death causes this spiral to be exaggerated
+      // TODO: Figure out why moving left prior to death causes this spiral to be exaggerated
       this.anchor.x = 0
       this.pivot.y = 24
       this.pivot.x = 24
