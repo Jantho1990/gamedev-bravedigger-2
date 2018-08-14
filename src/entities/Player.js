@@ -31,10 +31,10 @@ class Player extends TileSprite {
       this.pivot.y = 24
       this.pivot.x = 24
       this.rotation += dt * 5
-      if (dbgFirst) {
+      /* if (dbgFirst) {
         if (dbgCt++ > 5) dbgFirst = false
         console.log('Anchor:', this.anchor, 'Pivot:', this.pivot, 'Rotation:', this.rotation)
-      }
+      } */
       return
     }
 
