@@ -23,7 +23,7 @@ class GameScreen extends Container {
 
     const baddies = new Container()
     for (let i = 0; i < 3; i++) {
-      this.randoBat(baddies.add(new Bat(() => map.findFreeSpot(false))))
+      this.randoBat(baddies.add(new Bat(player)))
     }
     this.baddies = this.add(baddies)
 

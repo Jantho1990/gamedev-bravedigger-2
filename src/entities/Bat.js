@@ -1,10 +1,16 @@
 import pop from '../../pop/'
-const { Texture, TileSprite, math } = pop
+const { Texture, TileSprite, entity, math } = pop
 
 const texture = new Texture('res/img/bravedigger-tiles.png')
 
+const states = {
+  ATTACK: 0,
+  EVADE: 1,
+  WANDER: 2
+}
+
 class Bat extends TileSprite {
-  constructor(findWaypoint) {
+  constructor(target) {
     super(texture, 48, 48)
     this.hitBox = {
       x: 6,
@@ -19,33 +25,64 @@ class Bat extends TileSprite {
       y: 0
     }
     this.speed = math.rand(180, 300)
-    this.findWaypoint = findWaypoint
-    this.waypoint = findWaypoint()
+    // this.findWaypoint = findWaypoint
+    this.target = target
+    this.waypoint = null
+
+    this.state = states.ATTACK
   }
 
   update(dt, t) {
-    const { pos, dir, speed, waypoint } = this
+    const { pos, dir, target, speed, state, waypoint } = this
 
-    // Move in the direction of the path
-    const xo = waypoint.x - pos.x + 4
-    const yo = waypoint.y - pos.y - 1
+    const angle = entity.angle(target, this)
+    const distance = entity.distance(target, this)
+    let xo = 0
+    let yo = 0
+    let waypointAngle
+    let waypointDistance
 
-    const step = speed * dt // amount to move
-    const xIsClose = Math.abs(xo) <= step
-    const yIsClose = Math.abs(yo) <= step
-
-    if (!xIsClose) {
-      pos.x += speed * (xo > 0 ? 1 : -1) * dt // keep going in the same direction, or change if entity overshot the waypoint
+    switch (state) {
+      case states.ATTACK:
+        xo = Math.cos(angle) * speed * dt
+        yo = Math.sin(angle) * speed * dt
+        if (distance < 60) {
+          this.state = states.EVADE
+        }
+        break
+      case states.EVADE:
+        xo = -Math.cos(angle) * speed * dt
+        yo = -Math.sin(angle) * speed * dt
+        if (distance > 120) {
+          if (math.randOneIn(2)) {
+            this.state = states.WANDER
+            this.waypoint = {
+              x: pos.x + math.rand(-200, 200),
+              y: pos.y + math.rand(-200, 200)
+            }
+          } else {
+            this.state = states.ATTACK
+          }
+        }
+        break
+      case states.WANDER:
+        waypointAngle = math.angle(waypoint, pos)
+        waypointDistance = math.distance(pos, waypoint)
+        
+        xo = Math.cos(waypointAngle) * speed * dt
+        yo = Math.cos(waypointAngle) * speed * dt
+        if (waypointDistance < 60) {
+          this.state = states.EVADE
+        }
+        break
+      default:
+        throw new Error(`State ${state} not found.`)
     }
-    if (!yIsClose) {
-      pos.y += speed * (yo > 0 ? 1 : -1) * dt // keep going in the same direction, or change if entity overshot the waypoint
-    }
 
-    if (xIsClose && yIsClose) {
-      // New waypoint
-      this.waypoint = this.findWaypoint()
-    }
-    pos.y += Math.sin((t + speed) * 10) * speed * dt
+    // Move the bat
+    pos.x += xo
+    pos.y += yo
+    pos.y += Math.sin((t + speed) * 10) * speed * dt // bob as entity flies
 
     this.frame.x = ((t / 0.1) | 0) % 2 + 3 // animation for bat
   }
