@@ -27,9 +27,9 @@ class Player extends TileSprite {
     const { pos, controls, speed, map, gameOver } = this
 
     if (gameOver) {
-      this.rotation += dt * 5
-      this.pivot.y = 24
-      this.pivot.x = 24
+      this.rotation += dt * 5 * this.scale.x
+      this.pivot.y = 24 * this.scale.y
+      this.pivot.x = 24 * this.scale.x
       return
     }
 
