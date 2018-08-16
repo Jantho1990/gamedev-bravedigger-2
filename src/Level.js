@@ -67,7 +67,7 @@ class Level extends TileMap {
               spawns.bats.push({ x, y })
               return getIdx('empty')
             case 'X':
-              spawns.player = { x, y: y - 1 }
+              spawns.player = { x, y }
               return getIdx('empty')
             default:
               return getIdx('empty')
