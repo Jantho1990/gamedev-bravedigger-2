@@ -7,10 +7,9 @@ let dbgFirst = true
 let dbgCt = 0
 
 class Player extends TileSprite {
-  constructor(controls, map) {
+  constructor(controls) {
     super(texture, 48, 48)
     this.controls = controls
-    this.map = map
     this.hitBox = {
       x: 8,
       y: 10,
@@ -18,54 +17,34 @@ class Player extends TileSprite {
       h: 38
     }
     this.speed = 210
-    this.anchor = { x: 0, y: 0 }
+    this.jumping = true
+    this.vel = 0
     this.frame.x = 4
   }
 
   update(dt, t) {
-    const { pos, controls, map, speed, gameOver } = this
+    const { pos, controls, speed } = this
 
-    if (gameOver) {
-      // TODO: Figure out why moving left prior to death causes this spiral to be exaggerated
-      // this.anchor.x = 0
-      this.pivot.y = 24
-      this.pivot.x = 24
-      this.rotation += dt * 5
-      /* if (dbgFirst) {
-        if (dbgCt++ > 5) dbgFirst = false
-        console.log('Anchor:', this.anchor, 'Pivot:', this.pivot, 'Rotation:', this.rotation)
-      } */
-      return
-    }
-
-    let { x, y } = controls
+    const { x } = controls
     const xo = x * dt * speed
-    const yo = y * dt * speed
-    const r = wallslide(this, map, xo, yo)
-    if (r.x !== 0 && r.y !== 0) {
-      r.x /= Math.sqrt(2)
-      r.y /= Math.sqrt(2)
-    }
-    pos.x += r.x
-    pos.y += r.y
+    let yo = 0
 
-    // Animate
-    if (r.x || r.y) {
-      // Walking frames
-      this.frame.x = ((t / 0.08) | 0) % 4
-      // Walking left or right?
-      if (r.x < 0) {
-        this.scale.x = -1
-        this.anchor.x = 48
-      }
-      if (r.x > 0) {
-        this.scale.x = 1
-        this.anchor.x = 0
-      }
-    } else {
-      // Standing still
-      this.frame.x = ((t / 0.2) | 0) % 2 + 4
+    if (!this.jumping && controls.action) {
+      this.vel = -10
+      this.jumping = true
     }
+
+    if (this.jumping) {
+      this.vel += 32 * dt
+      yo += this.vel
+    }
+
+    if (x && !this.jumping) {
+      this.frame.x = ((t / 0.1) | 0) % 2
+    }
+
+    pos.x += xo
+    pos.y += yo
   }
 }
 
