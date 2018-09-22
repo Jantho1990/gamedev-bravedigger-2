@@ -8,4 +8,8 @@ function startGame() {
   game.scene = new GameScreen(game, keys, startGame)
 }
 startGame()
-game.run()
+game.run(() => {
+  /* for (let i = 0; i < 1000; i++) {
+    console.log('This is MAYHEM')
+  } */
+})

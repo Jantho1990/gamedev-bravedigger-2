@@ -1,7 +1,9 @@
+import Vec from './utils/Vec'
+
 class Sprite {
     constructor (texture) {
         this.texture = texture
-        this.pos = { x: 0, y: 0 }
+        this.pos = new Vec()
         this.anchor = { x: 0, y: 0 }
         this.pivot = { x: 0, y: 0 }
         this.rotation = 0

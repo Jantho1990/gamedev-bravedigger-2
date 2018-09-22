@@ -1,6 +1,7 @@
 import Camera from './Camera'
 import Container from './Container'
 import Game from './Game'
+import Rect from './Rect'
 import Sprite from './Sprite'
 import Text from './Text'
 import Texture from './Texture'
@@ -14,6 +15,7 @@ import wallslide from './movement/wallslide'
 import CanvasRenderer from './renderer/CanvasRenderer'
 import math from './utils/math'
 import entity from './utils/entity'
+import physics from './utils/physics'
 
 export default {
     Camera,
@@ -25,6 +27,8 @@ export default {
     KeyControls,
     MouseControls,
     math,
+    physics,
+    Rect,
     Sprite,
     State,
     Text,

@@ -6,6 +6,7 @@ import Pickup from './entities/Pickup'
 import Bat from './entities/Bat'
 import Totem from './entities/Totem'
 import { stat } from 'fs';
+import Vec from '../pop/utils/Vec';
 
 const states = {
   READY: 0,
@@ -22,6 +23,12 @@ class GameScreen extends Container {
     this.controls = controls
     this.onGameOver = onGameOver
     this.state = new State(READY)
+
+    // Dummy code
+    /* const vec = new Vec(5, 0)
+    console.log(vec.mag())
+    vec.multiply(2)
+    console.log(vec.mag()) */
 
     // Map, player, camera
     const map = new LevelMap(game.w, game.h)
@@ -41,10 +48,9 @@ class GameScreen extends Container {
 
     // Bats
     const bats = new Container()
-    map.spawns.bats.forEach(({ x, y }) => {
+    map.spawns.bats.forEach(spawn => {
       const bat = bats.add(new Bat(player))
-      bat.pos.x = x
-      bat.pos.y = y
+      bat.pos.copy(spawn)
     })
     this.bats = camera.add(bats)
 
