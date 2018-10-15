@@ -16,6 +16,8 @@ import CanvasRenderer from './renderer/CanvasRenderer'
 import math from './utils/math'
 import entity from './utils/entity'
 import physics from './utils/physics'
+import Vec from './utils/Vec'
+import Sound from './sound/Sound'
 
 export default {
     Camera,
@@ -29,11 +31,13 @@ export default {
     math,
     physics,
     Rect,
+    Sound,
     Sprite,
     State,
     Text,
     Texture,
     TileMap,
     TileSprite,
+    Vec,
     wallslide
 }

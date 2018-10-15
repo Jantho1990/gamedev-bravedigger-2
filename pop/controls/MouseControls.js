@@ -32,7 +32,6 @@ class MouseControls {
         this.isDown = true
         this.pressed = true
         this.mousePosFromEvent(e)
-        console.log('down')
     }
 
     up (e) {

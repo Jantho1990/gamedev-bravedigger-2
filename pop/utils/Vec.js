@@ -19,8 +19,8 @@ class Vec {
   }
 
   /**
-   * Copy an object with x,y coordiantes and set it as the vector
-   * initial value.
+   * Copy an object with x,y coordiantes and set those coordinates
+   * as this vector's value.
    * @param {} param0 
    */
   copy({ x, y }) {
@@ -44,6 +44,12 @@ class Vec {
   multiply(s) {
     this.x *= s
     this.y *= s
+    return this
+  }
+
+  divide(s) {
+    this.x /= s
+    this.y /= s
     return this
   }
 
