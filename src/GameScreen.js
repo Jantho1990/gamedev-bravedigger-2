@@ -124,9 +124,11 @@ class GameScreen extends Container {
     pickup.dead = true
 
     camera.shake()
+    camera.flash()
 
     if (pickups.children.length === 1) {
       camera.shake(16, 3)
+      camera.flash()
       this.populate()
       this.score += 5
     }

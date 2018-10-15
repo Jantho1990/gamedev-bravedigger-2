@@ -9,6 +9,9 @@ class CanvasRenderer {
   }
 
   render(container, clear = true) {
+    if (container.visible === false) {
+      return
+    }
     const {
       ctx
     } = this
@@ -26,9 +29,8 @@ class CanvasRenderer {
         if (child.visible === false || container.alpha === 0) {
           return
         }
-        if (container.alpha) {
-          ctx.save()
-          ctx.globalAlpha = container.alpha
+        if (child.alpha) {
+          ctx.globalAlpha = child.alpha
         }
         ctx.save()
         // Draw the leaf node
