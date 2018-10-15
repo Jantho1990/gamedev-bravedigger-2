@@ -14,9 +14,22 @@ class CanvasRenderer {
     } = this
 
     function renderRec(container) {
+      if (container.visible === false || container.alpha === 0) {
+        return
+      }
+      if (container.alpha) {
+        ctx.save()
+        ctx.globalAlpha = container.alpha
+      }
       // Render the container children
       container.children.forEach(child => {
-        if (child.visible === false) return
+        if (child.visible === false || container.alpha === 0) {
+          return
+        }
+        if (container.alpha) {
+          ctx.save()
+          ctx.globalAlpha = container.alpha
+        }
         ctx.save()
         // Draw the leaf node
         if (child.pos) {
@@ -86,6 +99,10 @@ class CanvasRenderer {
         }
         ctx.restore()
       })
+
+      if (container.alpha) {
+        ctx.restore()
+      }
     }
     if (clear) ctx.clearRect(0, 0, this.w, this.h)
     renderRec(container)
