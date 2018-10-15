@@ -1,12 +1,19 @@
 import Container from './Container'
 import math from './utils/math'
+import Vec from './utils/Vec';
 
 class Camera extends Container {
   constructor(subject, viewport, worldSize = viewport) {
     super()
+    this.pos = new Vec()
     this.w = viewport.w
     this.h = viewport.h
     this.worldSize = worldSize
+
+    this.shakePower = 0
+    this.shakeDecay = 0
+    this.shakeLast = new Vec()
+
     this.setSubject(subject)
   }
 
@@ -26,6 +33,31 @@ class Camera extends Container {
     this.focus()
   }
 
+  shake(power = 8, duration = 0.5) {
+    this.shakePower = power
+    this.shakeDecay = power / duration
+  }
+
+  _shake(dt) {
+    const { pos, shakePower, shakeLast } = this
+    if (shakePower <= 0) {
+      shakeLast.set(0, 0)
+      return
+    }
+    shakeLast.set(
+      math.randf(-shakePower, shakePower),
+      math.randf(-shakePower, shakePower)
+    )
+
+    pos.add(shakeLast)
+    this.shakePower -= this.shakeDecay * dt
+  }
+
+  _unShake() {
+    const { pos, shakeLast } = this
+    pos.subtract(shakeLast)
+  }
+
   focus() {
     const { pos, w, h, worldSize, subject, offset } = this
 
@@ -43,10 +75,11 @@ class Camera extends Container {
 
   update(dt, t) {
     super.update(dt, t)
-
+    this._unShake()
     if (this.subject) {
       this.focus()
     }
+    this._shake(dt)
   }
 }
 

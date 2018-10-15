@@ -118,25 +118,33 @@ class GameScreen extends Container {
     state.update(dt)
   }
 
+  gotPickup(pickup) {
+    const { camera, pickups } = this
+    this.score++
+    pickup.dead = true
+
+    camera.shake()
+
+    if (pickups.children.length === 1) {
+      camera.shake(16, 3)
+      this.populate()
+      this.score += 5
+    }
+
+    this.scoreText.text = this.score
+  }
+
   updatePlaying() {
     const { bats, player, pickups, state } = this
     const { GAMEOVER } = states
     bats.map(bat => {
       if (entity.hit(player, bat)) {
-        state.set(GAMEOVER)
+        //state.set(GAMEOVER)
       }
     })
 
     // Collect pickup
-    entity.hits(player, pickups, p => {
-      p.dead = true
-      this.score++
-      if (pickups.children.length === 1) {
-        this.populate()
-        this.score += 5
-      }
-      this.scoreText.text = this.score
-    })
+    entity.hits(player, pickups, pickup => this.gotPickup(pickup))
   }
 }
 
