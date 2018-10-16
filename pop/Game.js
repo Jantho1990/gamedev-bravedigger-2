@@ -3,8 +3,8 @@ import CanvasRenderer from './renderer/CanvasRenderer'
 
 const STEP = 1 / 60
 const MAX_FRAME = STEP * 5
-const MULTIPLIER = 1
-const SPEED = STEP * MULTIPLIER
+let MULTIPLIER = 1
+let SPEED = STEP * MULTIPLIER
 
 class Game {
   constructor(w, h, parent = "#board") {
@@ -37,6 +37,15 @@ class Game {
       requestAnimationFrame(loop)
     }
     requestAnimationFrame(init)
+  }
+
+  get speed() {
+    return MULTIPLIER
+  }
+
+  set speed(speed) {
+    MULTIPLIER = speed
+    SPEED = STEP * MULTIPLIER
   }
 }
 

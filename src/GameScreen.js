@@ -20,9 +20,12 @@ class GameScreen extends Container {
     super()
     this.w = game.w
     this.h = game.h
+    this.game = game
     this.controls = controls
     this.onGameOver = onGameOver
     this.state = new State(READY)
+
+    this.time = 0
 
     // Dummy code
     /* const vec = new Vec(5, 0)
@@ -100,7 +103,7 @@ class GameScreen extends Container {
         break
       case PLAYING:
         super.update(dt, t)
-        this.updatePlaying()
+        this.updatePlaying(dt)
         break
       case GAMEOVER:
         if (state.first) {
@@ -136,14 +139,18 @@ class GameScreen extends Container {
     this.scoreText.text = this.score
   }
 
-  updatePlaying() {
-    const { bats, player, pickups, state } = this
+  updatePlaying(dt) {
+    const { bats, player, pickups, game, state } = this
     const { GAMEOVER } = states
     bats.map(bat => {
       if (entity.hit(player, bat)) {
         //state.set(GAMEOVER)
       }
     })
+
+    this.time += dt
+    game.speed = Math.max(0.8, game.speed + Math.sin(this.time / 0.3) * 0.05)
+    this.scoreText.text = game.speed.toFixed(2)
 
     // Collect pickup
     entity.hits(player, pickups, pickup => this.gotPickup(pickup))
