@@ -20,19 +20,22 @@ class CanvasRenderer {
       if (container.visible === false || container.alpha === 0) {
         return
       }
+
       if (container.alpha) {
         ctx.save()
         ctx.globalAlpha = container.alpha
       }
+
       // Render the container children
       container.children.forEach(child => {
-        if (child.visible === false || container.alpha === 0) {
+        if (child.visible === false || child.alpha === 0) {
           return
         }
+        ctx.save()
         if (child.alpha) {
           ctx.globalAlpha = child.alpha
         }
-        ctx.save()
+        
         // Draw the leaf node
         if (child.pos) {
           ctx.translate(Math.round(child.pos.x), Math.round(child.pos.y))
