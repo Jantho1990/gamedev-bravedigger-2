@@ -12,7 +12,7 @@ export function angle(a, b) {
   return angle
 }
 
-export function clamp(x, min, max) {
+export function clamp(x, min = 0, max = 1) {
   return Math.max(min, Math.min(x, max))
 }
 
@@ -34,6 +34,10 @@ export function direction(angle) {
     x: Math.cos(angle),
     y: Math.sin(angle)
   }
+}
+
+export function lerp(x, min = 0, max = 1) {
+  return (x - min) / (max - min)
 }
 
 let random = Math.random
@@ -81,6 +85,7 @@ export default {
   clamp,
   distance,
   direction,
+  lerp,
   rand,
   randf,
   randOneFrom,
