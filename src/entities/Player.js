@@ -49,7 +49,8 @@ class Player extends TileSprite {
       return
     }
 
-    const { x, action } = controls
+    const { keys } = controls
+    const { x, action } = keys
 
     if (!this.falling && action) {
       physics.applyImpulse(

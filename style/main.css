@@ -12,7 +12,7 @@ body {
 }
 
 #board canvas {
-    background: hsl(0, 80%, 70%);
+    background: hsl(0, 0%, 0%);
 }
 
 .restart-text {

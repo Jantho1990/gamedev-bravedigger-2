@@ -1,12 +1,12 @@
-import pop from '../pop/'
+import pop from '../../pop'
 const { Camera, Container, entity, State, Text } = pop
-import LevelMap from './Level'
-import Player from './entities/Player'
-import Pickup from './entities/Pickup'
-import Bat from './entities/Bat'
-import Totem from './entities/Totem'
+import LevelMap from '../Level'
+import Player from '../entities/Player'
+import Pickup from '../entities/Pickup'
+import Bat from '../entities/Bat'
+import Totem from '../entities/Totem'
 import { stat } from 'fs';
-import Vec from '../pop/utils/Vec';
+import Vec from '../../pop/utils/Vec';
 
 const states = {
   READY: 0,
@@ -148,9 +148,9 @@ class GameScreen extends Container {
       }
     })
 
-    this.time += dt
+    /* this.time += dt
     game.speed = Math.max(0.8, game.speed + Math.sin(this.time / 0.3) * 0.05)
-    this.scoreText.text = game.speed.toFixed(2)
+    this.scoreText.text = game.speed.toFixed(2) */
 
     // Collect pickup
     entity.hits(player, pickups, pickup => this.gotPickup(pickup))
