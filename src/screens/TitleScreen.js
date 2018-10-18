@@ -1,6 +1,7 @@
 import pop from "../../pop/index.js"
 const { Container, Sprite, Text, Texture, TileSprite, math } = pop
 import ui from "../ui.js"
+import Timer from "../../pop/Timer.js";
 
 const textures = {
   tiles: new Texture("res/img/bravedigger-tiles.png"),
@@ -24,6 +25,11 @@ class TitleScreen extends Container {
     const title = new Sprite(textures.title)
     title.pos.set(200, -150)
     this.title = this.add(title)
+
+    // Do animation with timer instead
+    this.add(new Timer(1, p => {
+      title.pos.y = 320 * p - 150
+    }, null, 1))
 
     // Sub heading
     const t = new Text("press fire to begin", ui.title)
@@ -60,7 +66,7 @@ class TitleScreen extends Container {
     }
 
     // Lerp into position (from -150 to (-150+320) after one second, for one second.)
-    title.pos.y = 320 * math.clamp(math.lerp(t, 1, 2)) - 150
+    // title.pos.y = 320 * math.clamp(math.lerp(t, 1, 2)) - 150
 
     // Move around the background sprites
     sprites.pos.x = Math.cos(t / 2) * 30

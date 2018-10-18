@@ -7,6 +7,7 @@ import Text from './Text'
 import Texture from './Texture'
 import TileMap from './TileMap'
 import TileSprite from './TileSprite'
+import Timer from './Timer'
 import State from './State'
 import KeyControls from './controls/KeyControls'
 import MouseControls from './controls/MouseControls'
@@ -38,6 +39,7 @@ export default {
     Texture,
     TileMap,
     TileSprite,
+    Timer,
     Vec,
     wallslide
 }
