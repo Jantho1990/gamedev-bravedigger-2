@@ -10,6 +10,7 @@ import Vec from '../../pop/utils/Vec';
 import TileSprite from '../../pop/TileSprite';
 import OneUp from '../../pop/fx/OneUp';
 import Texture from '../../pop/Texture';
+import Timer from '../../pop/Timer';
 
 const texture = new Texture("res/img/bravedigger-tiles.png")
 
@@ -131,7 +132,7 @@ class GameScreen extends Container {
     this.score++
     pickup.dead = true
 
-    camera.shake()
+    camera.shake(100)
     camera.flash()
 
     // Make coin to OneUp
@@ -147,6 +148,16 @@ class GameScreen extends Container {
       camera.flash()
       this.populate()
       this.score += 5
+
+      // spawn one coin for each score point
+      /* for (let i = 0; i < this.score; i++) {
+        this.add(new Timer(0.1, null, () => {
+          const newCoin = this.add(new OneUp(coin))
+          newCoin.pos.copy(player.pos)
+          console.log('one upped', i)
+          alert('stop')
+        }, i * 0.1))
+      } */
     }
 
     this.scoreText.text = this.score
