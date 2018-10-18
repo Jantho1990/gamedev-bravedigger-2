@@ -21,14 +21,16 @@ class TitleScreen extends Container {
 
     this.drawBackground(game.w, game.h)
 
+    const { ease: { elasticOut } } = math
+
     // Main title
     const title = new Sprite(textures.title)
     title.pos.set(200, -150)
     this.title = this.add(title)
 
-    // Do animation with timer instead
+    // Do title lerp, with easing
     this.add(new Timer(1, p => {
-      title.pos.y = 320 * p - 150
+      title.pos.y = 320 * elasticOut(p) - 150
     }, null, 1))
 
     // Sub heading
@@ -39,14 +41,28 @@ class TitleScreen extends Container {
 
     // II
     const two = this.add(new Sprite(textures.two))
-    two.pos.set(980, game.h / 2 - 140)
+    two.pos.set(980, game.h)
     two.rotation = 20 / 180 * Math.PI
     two.scale.x = 0.5
     two.scale.y = 0.5
+    this.add(
+      new Timer(
+        1,
+        p => (two.pos.y = game.h - elasticOut(p) * 330 - 190),
+        null,
+        0.8
+      )
+    )
 
     // Bravedigger
     const bd = new TileSprite(textures.wave, 48 * 5, 48 * 5)
     bd.pos.set(170, game.h / 2 - 100)
+    this.add(
+      new Timer(
+        2,
+        p => (bd.pos.y = elasticOut(p) * game.h - game.h / 1.6)
+      )
+    )
     this.bd = this.add(bd)
 
     controls.keys.reset()

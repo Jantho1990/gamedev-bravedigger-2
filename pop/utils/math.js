@@ -36,6 +36,29 @@ export function direction(angle) {
   }
 }
 
+// Robert Penner's Easing Functions
+export const ease = {
+  quadIn (x) {
+    return x * x
+  },
+  quadOut (x) {
+    return 1 - this.quadIn(1 - x)
+  },
+  cubicIn (x) {
+    return x * x * x
+  },
+  cubicInOut (p) {
+    if (p < 0.5) return this.cubicIn(p * 2) / 2
+    return 1 - this.cubicIn((1 - p) * 2) / 2
+  },
+  elasticOut (x) {
+    const p = 0.4
+    return Math.pow(2, -10 * x) *
+      Math.sin((x - p / 4) *
+      (Math.PI * 2) / p) + 1
+  }
+}
+
 export function lerp(x, min = 0, max = 1) {
   return (x - min) / (max - min)
 }
@@ -85,6 +108,7 @@ export default {
   clamp,
   distance,
   direction,
+  ease,
   lerp,
   rand,
   randf,
