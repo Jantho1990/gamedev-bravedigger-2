@@ -9,7 +9,7 @@ class Level extends TileMap {
     const tileSize = 48
     const tileIndexes = [
       { id: 'empty', x: 0, y: 2, walkable: true },
-      { id: 'wall', x: 2, y: 3 },
+      { id: 'wall', x: 1, y: 3 },
       { id: 'wall3d', x: 3, y: 3 }
     ]
     const getTile = id => tileIndexes.find(t => t.id == id)

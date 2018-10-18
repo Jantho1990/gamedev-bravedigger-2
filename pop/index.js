@@ -11,6 +11,7 @@ import Timer from './Timer'
 import State from './State'
 import KeyControls from './controls/KeyControls'
 import MouseControls from './controls/MouseControls'
+import OneUp from './fx/OneUp'
 import deadInTracks from './movement/deadInTracks'
 import wallslide from './movement/wallslide'
 import CanvasRenderer from './renderer/CanvasRenderer'
@@ -30,6 +31,7 @@ export default {
     KeyControls,
     MouseControls,
     math,
+    OneUp,
     physics,
     Rect,
     Sound,

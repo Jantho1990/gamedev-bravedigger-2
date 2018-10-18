@@ -7,6 +7,11 @@ import Bat from '../entities/Bat'
 import Totem from '../entities/Totem'
 import { stat } from 'fs';
 import Vec from '../../pop/utils/Vec';
+import TileSprite from '../../pop/TileSprite';
+import OneUp from '../../pop/fx/OneUp';
+import Texture from '../../pop/Texture';
+
+const texture = new Texture("res/img/bravedigger-tiles.png")
 
 const states = {
   READY: 0,
@@ -122,12 +127,20 @@ class GameScreen extends Container {
   }
 
   gotPickup(pickup) {
-    const { camera, pickups } = this
+    const { camera, pickups, player } = this
     this.score++
     pickup.dead = true
 
     camera.shake()
     camera.flash()
+
+    // Make coin to OneUp
+    const coin = new TileSprite(texture, 48, 48)
+    coin.anims.add('spin', [5, 6, 7, 8].map(x => ({ x, y: 4 })), 0.1)
+    coin.anims.play('spin')
+    // OneUp it!
+    const one = this.add(new OneUp(coin))
+    one.pos.copy(player.pos)
 
     if (pickups.children.length === 1) {
       camera.shake(16, 3)
