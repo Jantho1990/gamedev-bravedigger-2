@@ -11,6 +11,7 @@ import TileSprite from '../../pop/TileSprite';
 import OneUp from '../../pop/fx/OneUp';
 import Texture from '../../pop/Texture';
 import Timer from '../../pop/Timer';
+import ParticleEmitter from '../../pop/fx/ParticleEmitter';
 
 const texture = new Texture("res/img/bravedigger-tiles.png")
 
@@ -54,6 +55,7 @@ class GameScreen extends Container {
     this.map = camera.add(map)
     this.pickups = camera.add(new Container())
     this.player = camera.add(player)
+    this.fx = camera.add(new Container())
 
     // Bats
     const bats = new Container()
@@ -72,6 +74,15 @@ class GameScreen extends Container {
 
     // Pickups
     this.populate()
+
+    // Heart Particles
+    const p = new TileSprite(texture, 48, 48)
+    p.scale.x = 0.4
+    p.scale.y = 0.4
+    p.frame.x = 6
+    p.frame.y = 2
+
+    this.pe = this.fx.add(new ParticleEmitter(25, p, { life: 2 }))
 
     // Score
     this.score = 0
@@ -149,6 +160,10 @@ class GameScreen extends Container {
       this.populate()
       this.score += 5
 
+      // Coin Particles
+      this.ce = this.fx.add(new ParticleEmitter(this.score, coin, { life: 2, gravity: -20 }))
+      this.ce.play(player.pos)
+
       // spawn one coin for each score point
       /* for (let i = 0; i < this.score; i++) {
         this.add(new Timer(0.1, null, () => {
@@ -164,10 +179,11 @@ class GameScreen extends Container {
   }
 
   updatePlaying(dt) {
-    const { bats, player, pickups, game, state } = this
+    const { bats, player, pickups, pe, game, state } = this
     const { GAMEOVER } = states
     bats.map(bat => {
       if (entity.hit(player, bat)) {
+        pe.play(entity.center(player))
         //state.set(GAMEOVER)
       }
     })
