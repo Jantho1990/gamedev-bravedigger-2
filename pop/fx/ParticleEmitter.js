@@ -20,7 +20,6 @@ class ParticleEmitter extends Container {
     this.lastPlay = now
 
     this.pos.copy(pos)
-    console.log(this.particles)
     this.particles.forEach(p => p.reset())
   }
 }
