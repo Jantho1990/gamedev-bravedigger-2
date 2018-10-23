@@ -63,6 +63,10 @@ export function lerp(x, min = 0, max = 1) {
   return (x - min) / (max - min)
 }
 
+export function mix(a, b, p) {
+  return a * (1 - p) + b * p
+}
+
 let random = Math.random
 export function rand(min, max) {
   return Math.floor(randf(min, max))
@@ -110,6 +114,7 @@ export default {
   direction,
   ease,
   lerp,
+  mix,
   rand,
   randf,
   randOneFrom,

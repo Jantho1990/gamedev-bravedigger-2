@@ -19,7 +19,18 @@ class Camera extends Container {
     this.flashDuration = 0
     this.flashRect = null
 
+    this.easing = 0.03
+
+    // Debugging tracking rect
+    this.deb = this.add(
+      new Rect(0, 0, {
+        fill: 'hsla(0, 50%, 50%, 0.2)'
+      })
+    )
+
+    this.setTracking(96, 72)
     this.setSubject(subject)
+    this.focus()
   }
 
   setSubject(e) {
@@ -36,6 +47,15 @@ class Camera extends Container {
       this.offset.y -= e.anchor.y
     }
     this.focus()
+  }
+
+  setTracking(w, h) {
+    const { deb } = this
+    this.tracking = new Vec(w, h)
+    if (deb) {
+      deb.w = w * 2
+      deb.h = h * 2
+    }
   }
 
   shake(power = 8, duration = 0.5) {
@@ -89,26 +109,43 @@ class Camera extends Container {
     }
   }
 
-  focus() {
-    const { pos, w, h, worldSize, subject, offset } = this
+  focus(ease = 1, track = true) {
+    const { deb, pos, w, h, worldSize, subject, offset, tracking } = this
 
     const centeredX = subject.x + offset.x - w / 2
     const maxX = worldSize.w - w
-    const x = -math.clamp(centeredX, 0, maxX)
+    let x = -math.clamp(centeredX, 0, maxX)
 
     const centeredY = subject.y + offset.y - h / 2
     const maxY = worldSize.h - h
-    const y = -math.clamp(centeredY, 0, maxY)
+    let y = -math.clamp(centeredY, 0, maxY)
 
-    pos.x = x
-    pos.y = y
+    if (deb) {
+      deb.pos.set(
+        -pos.x + w / 2 - tracking.x,
+        -pos.y + h / 2 - tracking.y
+      )
+    }
+
+    if (track) {
+      // Tracking box
+      if (Math.abs(centeredX + pos.x) < tracking.x) {
+        x = pos.x
+      }
+      if (Math.abs(centeredY + pos.y) < tracking.y) {
+        y = pos.y
+      }
+    }
+
+    pos.x = math.mix(pos.x, x, ease)
+    pos.y = math.mix(pos.y, y, ease)
   }
 
   update(dt, t) {
     super.update(dt, t)
     this._unShake()
     if (this.subject) {
-      this.focus()
+      this.focus(this.easing)
     }
     this._shake(dt)
     this._flash(dt)
