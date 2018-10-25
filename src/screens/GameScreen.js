@@ -58,16 +58,16 @@ class GameScreen extends Container {
     this.fx = camera.add(new Container())
 
     // Bats
-    const bats = new Container()
+    const baddies = new Container()
     map.spawns.bats.forEach(spawn => {
-      const bat = bats.add(new Bat(player))
+      const bat = baddies.add(new Bat(player))
       bat.pos.copy(spawn)
     })
-    this.bats = camera.add(bats)
+    this.baddies = camera.add(baddies)
 
     // Totems
     map.spawns.totems.forEach(({ x, y }) => {
-      const t = camera.add(new Totem(player, b => bats.add(b)))
+      const t = camera.add(new Totem(player, b => baddies.add(b)))
       t.pos.x = x
       t.pos.y = y
     })
@@ -101,6 +101,26 @@ class GameScreen extends Container {
     for (let i = 0; i < 5; i++) {
       const p = pickups.add(new Pickup())
       p.pos = map.findFreeSpot()
+    }
+  }
+
+  playerWasHit(baddie) {
+    const { player, pe, game, camera } = this
+
+    if (player.hitBy(baddie)) {
+      pe.play(entity.center(player))
+
+      if (player.gameOver) {
+        this.state.set(states.GAMEOVER)
+      }
+
+      camera.shake(9)
+    }
+
+    switch (baddie.type) {
+      case 'Bullet':
+        baddie.dead = true
+        break;
     }
   }
 
@@ -179,11 +199,12 @@ class GameScreen extends Container {
   }
 
   updatePlaying(dt) {
-    const { bats, player, pickups, pe, game, state } = this
+    const { baddies, player, pickups, pe, game, state } = this
     const { GAMEOVER } = states
-    bats.map(bat => {
-      if (entity.hit(player, bat)) {
-        pe.play(entity.center(player))
+    baddies.map(b => {
+      if (entity.hit(player, b)) {
+        this.playerWasHit(b)
+        // pe.play(entity.center(player))
         //state.set(GAMEOVER)
       }
     })

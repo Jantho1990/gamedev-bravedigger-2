@@ -36,7 +36,28 @@ class Player extends TileSprite {
     this.vel = new Vec()
     this.acc = new Vec()
 
+    this.jumpedAt = 0
     this.falling = true
+    this.fallingTimer = 0
+
+    this.hp = 5
+    this.invincible = 0
+
+    this.dir = -1
+  }
+
+  hitBy() {
+    if (this.invincible > 0) {
+      return false
+    }
+
+    this.hp -= 1
+    if (this.hp <= 0) {
+      this.gameOver = true
+    } else {
+      this.invincible = 1.0
+    }
+    return true
   }
 
   update(dt, t) {
@@ -114,6 +135,13 @@ class Player extends TileSprite {
     }
 
     // Animations
+    if ((this.invincible -= dt) > 0) {
+      this.alpha = (t * 10 % 2) | 0 ? 0 : 1
+      // this.visible = this.alpha > 0 ? 1 : 0
+    } else {
+      this.alpha = 1
+    }
+
     if (x && !this.jumping) {
       this.frame.x = ((t / 0.1) | 0) % 4
       if (x > 0) {
