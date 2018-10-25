@@ -7,6 +7,7 @@ const { Texture, TileSprite, wallslide } = pop
 const texture = new Texture('res/img/bravedigger-tiles.png')
 
 const GRAVITY = 2900
+const JUMP_FORGIVENESS = 0.08
 const JUMP_IMPULSE = 780
 const STEER_FORCE = 2000
 const MAX_VEL = 300
@@ -127,11 +128,20 @@ class Player extends TileSprite {
       const e = entity.bounds(this)
       const leftFoot = map.pixelToMapPos({ x: e.x, y: e.y + e.h + 1 })
       const rightFoot = map.pixelToMapPos({x: e.x + e.w, y: e.y + e.h + 1 })
-      const left = map.tileAtMapPos(leftFoot).frame.walkable
-      const right = map.tileAtMapPos(rightFoot).frame.walkable
-      if (left && right) {
-        this.falling = true
+      const left = map.tileAtMapPos(leftFoot)
+      const right = map.tileAtMapPos(rightFoot)
+      if (left.frame.walkable && right.frame.walkable) {
+        if (this.fillingTimer <= 0) {
+          this.fallingTimer = JUMP_FORGIVENESS
+        } else {
+          if ((this.fallingTimer -= dt) <= 0) {
+            this.falling = true
+          }
+        }
       }
+      /* if (left && right) {
+        this.falling = true
+      } */
     }
 
     // Animations
