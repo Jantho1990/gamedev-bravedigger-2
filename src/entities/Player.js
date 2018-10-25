@@ -13,6 +13,8 @@ const STEER_FORCE = 2000
 const MAX_VEL = 300
 const MIN_VEL = 200
 const FRICTION_GROUND = 1800
+const WALL_JUMP_FORGIVENESS = 0.4
+const WALL_JUMP_IMPULSE = 500
 
 let dbgFirst = true
 let dbgCt = 0
@@ -40,6 +42,10 @@ class Player extends TileSprite {
     this.jumpedAt = 0
     this.falling = true
     this.fallingTimer = 0
+
+    this.wallDir = 0
+    this.wallTimer = 0
+    this.releasedAction = false
 
     this.hp = 5
     this.invincible = 0
@@ -74,7 +80,7 @@ class Player extends TileSprite {
   }
 
   update(dt, t) {
-    const { pos, controls, speed, map, gameOver, vel } = this
+    const { pos, controls, speed, map, gameOver, vel, falling, wallTimer } = this
 
     if (gameOver) {
       this.rotation += dt * 5 * this.scale.x
@@ -85,6 +91,34 @@ class Player extends TileSprite {
 
     const { keys } = controls
     const { x, action } = keys
+    const jump = action
+    if (x) {
+      this.dir = x
+    }
+
+    // Check when buttons released before retriggering
+    if (!jump) {
+      this.releasedAction = true
+    }
+
+    const canWallJump = wallTimer > 0 && this.releasedAction
+    if (jump && (!falling || canWallJump)) {
+      let xo = 0
+      let ypower = 1
+      if (canWallJump) {
+        xo = WALL_JUMP_IMPULSE * this.wallDir * -1
+        ypower = 1.1
+        vel.y = 0
+        this.dir = this.wallDir * -1
+      }
+
+      physics.applyImpulse(this, { x: xo, y: -JUMP_IMPULSE * ypower }, dt)
+
+      this.wallTimer = 0
+      this.falling = true
+      this.jumpedAt = t
+      this.releasedAction = false
+    }
 
     if (!this.falling && action) {
       physics.applyImpulse(
@@ -130,7 +164,15 @@ class Player extends TileSprite {
     if (r.hits.up) {
       vel.set(0, 0)
     }
+
+    // Wall jump detection
+    this.wallTimer -= dt
     if (r.hits.left || r.hits.right) {
+      this.wallDir = r.hits.left ? -1 : 1
+      if (this.falling && this.wallTimer <= 0 && t - this.jumpedAt > 0.105) {
+        // Can wall jump...
+        this.wallTimer = WALL_JUMP_FORGIVENESS
+      }
       vel.x = 0
     }
 
