@@ -149,7 +149,7 @@ class GameScreen extends Container {
         super.update(dt, t)
 
         // Wait for space bar to restart
-        if (player.gameOver && controls.action) {
+        if (player.gameOver && controls.keys.action) {
           this.onGameOver()
         }
         break
