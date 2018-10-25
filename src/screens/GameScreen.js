@@ -171,7 +171,7 @@ class GameScreen extends Container {
     coin.anims.add('spin', [5, 6, 7, 8].map(x => ({ x, y: 4 })), 0.1)
     coin.anims.play('spin')
     // OneUp it!
-    const one = this.add(new OneUp(coin))
+    const one = this.fx.add(new OneUp(coin))
     one.pos.copy(player.pos)
 
     if (pickups.children.length === 1) {
