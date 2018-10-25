@@ -47,11 +47,11 @@ class Player extends TileSprite {
     this.dir = -1
   }
 
-  hitBy() {
+  hitBy(e) {
     if (this.invincible > 0) {
       return false
     }
-
+    this.knockback(e)
     this.hp -= 1
     if (this.hp <= 0) {
       this.gameOver = true
@@ -59,6 +59,18 @@ class Player extends TileSprite {
       this.invincible = 1.0
     }
     return true
+  }
+
+  knockback(e) {
+    const { vel, acc } = this
+    const angle = entity.angle(this, e)
+    const power = 400
+
+    vel.set(0, 0)
+    acc.set(0, 0)
+
+    const dir = new Vec(Math.cos(angle), -1).multiply(power)
+    physics.applyImpulse(this, dir, 1 / 60)
   }
 
   update(dt, t) {
