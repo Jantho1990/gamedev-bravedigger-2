@@ -10,7 +10,8 @@ class Level extends TileMap {
     const tileIndexes = [
       { id: 'empty', x: 0, y: 2, walkable: true },
       { id: 'wall', x: 1, y: 3 },
-      { id: 'wall3d', x: 3, y: 3 }
+      { id: 'wall3d', x: 3, y: 3 },
+      { id: 'cloud', x: 0, y: 5, walkable: true, cloud: true }
     ]
     const getTile = id => tileIndexes.find(t => t.id == id)
     const getIdx = id => tileIndexes.indexOf(getTile(id))
@@ -19,15 +20,15 @@ class Level extends TileMap {
 #########################
 #####                ####
 ###                B  ###
-##                ###  ##
+##                ~~~  ##
 #       ########       ##
-#   ##       ###        #
+#   ~~       ###        #
 #B            ####      #
 ###             ##      T
 ####   ##T##    ####    #
-#####        #         ##
+#####        ~         ##
 ###                  ####
-##    ##      #         #
+##    ##      ~         #
 #   #####        ########
 # ########    T##########
 #X          #############
@@ -69,6 +70,8 @@ class Level extends TileMap {
             case 'X':
               spawns.player = { x, y }
               return getIdx('empty')
+            case '~':
+              return getIdx('cloud')
             default:
               return getIdx('empty')
           }

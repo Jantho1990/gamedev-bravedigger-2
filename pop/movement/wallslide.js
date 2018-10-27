@@ -1,5 +1,10 @@
 import entity from '../utils/entity'
 
+const TL = 0
+const TR = 1
+const BL = 2
+const BR = 3
+
 export default function wallslide(ent, map, x = 0, y = 0) {
   let tiles
   let tileEdge
@@ -27,11 +32,17 @@ export default function wallslide(ent, map, x = 0, y = 0) {
       yo = tileEdge - bounds.y // edge minus entity top y-coordinate
     }
 
+    const isCloud = tiles[BL].frame.cloud || tiles[BR].frame.cloud
+
     // Hit your feet
-    if (y > 0 && !(bl && br)) {
-      hits.down = true
-      tileEdge = tiles[2].pos.y - 1 // bottom-left tile y-coordinate minus 1 pixel
-      yo = tileEdge - (bounds.y + bounds.h) // minus offset of bounds because we calculate from top-left
+    // No need to check y > 0 because if we get here y must be > 0
+    if (!(bl && br) || isCloud) {
+      tileEdge = tiles[BL].pos.y - 1 // bottom-left tile y-coordinate minus 1 pixel
+      const dist = tileEdge - (bounds.y + bounds.h) // minus offset of bounds because we calculate from top-left
+      if (!isCloud || dist > -10) {
+        hits.down = true
+        yo = dist
+      }
     }
   }
 
