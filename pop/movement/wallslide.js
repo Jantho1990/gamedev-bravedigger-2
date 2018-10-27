@@ -1,5 +1,12 @@
 import entity from '../utils/entity'
 
+/*
+  Expects:
+  * an entity (with pos vector, w & h)
+  * a Pop TileMap
+  * The x and y amount *requesting* to move (no checks if 0)
+*/
+
 const TL = 0
 const TR = 1
 const BL = 2

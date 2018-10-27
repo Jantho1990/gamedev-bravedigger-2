@@ -193,9 +193,13 @@ class Player extends TileSprite {
           }
         }
       }
-      /* if (left && right) {
-        this.falling = true
-      } */
+
+      // Check for bridges
+      [left, right].forEach(t => {
+        if (t.frame.bridge) {
+          map.makeDisappearingTile(t)
+        }
+      })
     }
 
     // Animations
