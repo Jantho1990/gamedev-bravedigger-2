@@ -1,7 +1,8 @@
+import Assets from './Assets'
+
 class Texture {
-    constructor (url) {
-        this.img = new Image()
-        this.img.src = url
+    constructor(url) {
+        this.img = Assets.image(url)
     }
 }
 

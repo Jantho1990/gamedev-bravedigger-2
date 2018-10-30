@@ -1,5 +1,6 @@
 import Container from './Container'
 import CanvasRenderer from './renderer/CanvasRenderer'
+import Assets from './Assets'
 
 const STEP = 1 / 60
 const MAX_FRAME = STEP * 5
@@ -16,27 +17,29 @@ class Game {
   }
 
   run(gameUpdate = () => {}) {
-    let dt = 0
-    let last = 0
-    const loop = ms => {
-      requestAnimationFrame(loop)
+    Assets.onReady(() => {
+      let dt = 0
+      let last = 0
+      const loop = ms => {
+        requestAnimationFrame(loop)
 
-      const t = ms / 1000 // Convert to seconds
-      dt += Math.min(t - last, MAX_FRAME)
-      last = t
+        const t = ms / 1000 // Convert to seconds
+        dt += Math.min(t - last, MAX_FRAME)
+        last = t
 
-      while (dt >= STEP) {
-        this.scene.update(STEP, t / MULTIPLIER)
-        gameUpdate(STEP, t / MULTIPLIER)
-        dt -= SPEED
+        while (dt >= STEP) {
+          this.scene.update(STEP, t / MULTIPLIER)
+          gameUpdate(STEP, t / MULTIPLIER)
+          dt -= SPEED
+        }
+        this.renderer.render(this.scene)
       }
-      this.renderer.render(this.scene)
-    }
-    const init = ms => {
-      last = ms / 1000
-      requestAnimationFrame(loop)
-    }
-    requestAnimationFrame(init)
+      const init = ms => {
+        last = ms / 1000
+        requestAnimationFrame(loop)
+      }
+      requestAnimationFrame(init)
+    })
   }
 
   get speed() {
