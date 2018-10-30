@@ -18,6 +18,7 @@ import CanvasRenderer from './renderer/CanvasRenderer'
 import math from './utils/math'
 import entity from './utils/entity'
 import physics from './utils/physics'
+import tiledParser from './utils/tiledParser'
 import Vec from './utils/Vec'
 import Sound from './sound/Sound'
 
@@ -39,6 +40,7 @@ export default {
     State,
     Text,
     Texture,
+    tiledParser,
     TileMap,
     TileSprite,
     Timer,

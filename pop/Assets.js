@@ -80,6 +80,17 @@ class Assets {
       return audio
     }).cloneNode()
   }
+
+  static json(url) {
+    return load(url, (url, onAssetLoad) => 
+      fetch(url)
+        .then(res => res.json())
+        .then(json => {
+          onAssetLoad(url)
+          return json
+        }).catch(e => console.log(e))
+    )
+  }
 }
 
 export default Assets

@@ -8,12 +8,36 @@ const controls = {
   keys: new KeyControls()
 }
 
+const defaults = () => ({
+  newGame: true,
+  level: 1,
+  doors: { '1': true },
+  data: {},
+  hp: 5,
+  score: 0,
+  spawn: null
+})
+
+let state = defaults()
+
 function title () {
-  game.scene = new TitleScreen(game, controls, startGame)
+  state = defaults()
+  game.setScene(
+    new TitleScreen(game, controls, () => startGame(1)),
+    0
+  )
 }
 
-function startGame() {
-  game.scene = new GameScreen(game, controls, title)
+function startGame(toLevel, spawn) {
+  state.level = toLevel
+  state.spawn = spawn
+
+  game.setScene(
+    new GameScreen(game, controls, state, {
+      onLevel: startGame,
+      onReset: title
+    })
+  )
 }
 
 title()

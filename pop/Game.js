@@ -14,6 +14,19 @@ class Game {
     this.renderer = new CanvasRenderer(w, h)
     document.querySelector(parent).appendChild(this.renderer.view)
     this.scene = new Container()
+
+    this.fadeTime = 0
+    this.fadeDuration = 0
+  }
+
+  setScene(scene, duration = 0.5) {
+    if (!duration) {
+      this.scene = scene
+      return
+    }
+    this.destination = scene
+    this.fadeTime = duration
+    this.fadeDuration = duration
   }
 
   run(gameUpdate = () => {}) {
@@ -21,6 +34,7 @@ class Game {
       let dt = 0
       let last = 0
       const loop = ms => {
+        const { scene, renderer, fadeTime } = this
         requestAnimationFrame(loop)
 
         const t = ms / 1000 // Convert to seconds
@@ -33,6 +47,19 @@ class Game {
           dt -= SPEED
         }
         this.renderer.render(this.scene)
+
+        // Screen transition
+        if (fadeTime > 0) {
+          const { fadeDuration, destination } = this
+          const ratio = fadeTime / fadeDuration
+          this.scene.alpha = ratio
+          destination.alpha = 1 - ratio
+          renderer.render(destination, false)
+          if ((this.fadeTime -= STEP) <= 0) {
+            this.scene = destination
+            this.destination = null
+          }
+        }
       }
       const init = ms => {
         last = ms / 1000

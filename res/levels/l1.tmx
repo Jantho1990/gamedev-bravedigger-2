@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.1" orientation="orthogonal" renderorder="left-up" width="25" height="16" tilewidth="48" tileheight="48" infinite="0" nextobjectid="1">
+<map version="1.0" tiledversion="1.1.1" orientation="orthogonal" renderorder="left-up" width="25" height="16" tilewidth="48" tileheight="48" infinite="0" nextobjectid="11">
  <tileset firstgid="1" source="bravedigger-tiles.tsx"/>
- <layer name="Tile Layer 1" width="25" height="16">
+ <layer name="Level" width="25" height="16">
   <data encoding="csv">
 32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,
 55,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,53,
@@ -21,4 +21,14 @@
 53,54,54,54,32,54,54,54,54,54,54,54,54,54,54,54,54,54,54,54,54,54,54,54,55
 </data>
  </layer>
+ <objectgroup name="Entities">
+  <object id="1" name="Hero" type="t" gid="5" x="384" y="564" width="48" height="48"/>
+  <object id="4" gid="26" x="719" y="625" width="48" height="48"/>
+  <object id="5" gid="26" x="385" y="337" width="48" height="48"/>
+  <object id="6" gid="26" x="1007" y="96" width="48" height="48"/>
+  <object id="7" gid="26" x="335" y="143" width="48" height="48"/>
+  <object id="8" gid="26" x="48" y="623" width="48" height="48"/>
+  <object id="9" gid="14" x="665" y="286" width="48" height="48"/>
+  <object id="10" gid="14" x="476" y="94" width="48" height="48"/>
+ </objectgroup>
 </map>
