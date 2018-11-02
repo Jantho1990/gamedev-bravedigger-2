@@ -19,7 +19,6 @@ const defaults = () => ({
 })
 
 let state = defaults()
-
 function title () {
   state = defaults()
   game.setScene(
@@ -31,7 +30,6 @@ function title () {
 function startGame(toLevel, spawn) {
   state.level = toLevel
   state.spawn = spawn
-
   game.setScene(
     new GameScreen(game, controls, state, {
       onLevel: startGame,

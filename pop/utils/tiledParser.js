@@ -7,6 +7,7 @@ function tiledParser(json) {
     layers,
     tilesets
   } = json
+  // debugger
 
   const getLayer = name => {
     const layer = layers.find(layer => layer.name === name)
@@ -17,7 +18,7 @@ function tiledParser(json) {
   }
 
   const getTileset = idx => {
-    if (!tilesets || ~tilesets[idx]) {
+    if (!tilesets || !tilesets[idx]) {
       throw new Error(`Tiled Error: Missing tileset index "${idx}".`)
     }
     return tilesets[idx]
@@ -57,6 +58,7 @@ function tiledParser(json) {
   const tileset = getTileset(0)
   const props = tileset.tileproperties // extra tile properties: walkable, clouds
   const tilesPerRow = Math.floor(tileset.imageWidth / tileset.tilewidth)
+  // debugger
   const tiles = levelLayer.data.map(cell => {
     const idx = cell - tileset.firstgid // get correct Tiled offset
     return Object.assign({}, props && props[idx] || {}, {
@@ -66,13 +68,13 @@ function tiledParser(json) {
   })
 
   return {
-    tilew,
+    tileW,
     tileH,
     mapW,
     mapH,
     tiles,
     getObjectByName,
-    getObjectByType
+    getObjectsByType
   }
 }
 

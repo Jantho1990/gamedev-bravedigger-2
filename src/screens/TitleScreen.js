@@ -69,8 +69,21 @@ class TitleScreen extends Container {
   }
 
   start() {
-    const { onStart } = this
-    onStart()
+    const { bd, starting, onStart } = this
+    if (starting) {
+      return
+    }
+    this.starting = true
+    const yo = bd.pos.y
+    this.add(
+      new Timer(
+        0.6,
+        p => {
+          bd.pos.y = math.smoothstep(p) * -850 + yo;
+        },
+        onStart
+      )
+    )
   }
 
   update(dt, t) {

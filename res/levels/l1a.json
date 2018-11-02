@@ -125,8 +125,75 @@
  "tileheight":48,
  "tilesets":[
         {
+         "columns":10,
          "firstgid":1,
-         "source":"bravedigger-tiles.tsx"
+         "image":"..\/img\/bravedigger-tiles.png",
+         "imageheight":336,
+         "imagewidth":527,
+         "margin":0,
+         "name":"bravedigger-tiles",
+         "spacing":0,
+         "tilecount":70,
+         "tileheight":48,
+         "tileproperties":
+            {
+             "32":
+                {
+                 "walkable":true
+                },
+             "33":
+                {
+                 "walkable":true
+                },
+             "34":
+                {
+                 "walkable":true
+                },
+             "50":
+                {
+                 "cloud":true,
+                 "walkable":true
+                },
+             "55":
+                {
+                 "bridge":true,
+                 "walkable":true
+                },
+             "56":
+                {
+                 "walkable":true
+                }
+            },
+         "tilepropertytypes":
+            {
+             "32":
+                {
+                 "walkable":"bool"
+                },
+             "33":
+                {
+                 "walkable":"bool"
+                },
+             "34":
+                {
+                 "walkable":"bool"
+                },
+             "50":
+                {
+                 "cloud":"bool",
+                 "walkable":"bool"
+                },
+             "55":
+                {
+                 "bridge":"bool",
+                 "walkable":"bool"
+                },
+             "56":
+                {
+                 "walkable":"bool"
+                }
+            },
+         "tilewidth":48
         }],
  "tilewidth":48,
  "type":"map",

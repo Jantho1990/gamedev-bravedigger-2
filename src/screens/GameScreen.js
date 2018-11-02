@@ -1,6 +1,6 @@
 import pop from '../../pop'
 const { Camera, Container, entity, State, Text } = pop
-import TiledLevel from '../Level'
+import TiledLevel from '../TiledLevel'
 import Player from '../entities/Player'
 import Pickup from '../entities/Pickup'
 import Bat from '../entities/Bat'
@@ -19,12 +19,13 @@ const texture = new Texture("res/img/bravedigger-tiles.png")
 const states = {
   READY: 0,
   PLAYING: 1,
-  GAMEOVER: 2
+  GAMEOVER: 2,
+  LOADING: 3
 }
 
 class GameScreen extends Container {
   constructor(game, controls, gameState, screens) {
-    const { READY } = states
+    const { LOADING } = states
     super()
     this.w = game.w
     this.h = game.h
@@ -33,7 +34,7 @@ class GameScreen extends Container {
     this.gameState = gameState
     this.screens = screens
 
-    this.state = new State(READY)
+    this.state = new State(LOADING)
 
     this.time = 0
 
@@ -61,7 +62,7 @@ class GameScreen extends Container {
     }
 
     // Either load from url or memory
-    const levelUrl = `res/levels/l${gameState.level}.json?c=${Date.now()}`
+    const levelUrl = `res/levels/l${gameState.level}a.json?c=${Date.now()}`
     const serialized = gameState.data[gameState.level]
     const level = serialized ?
       Promise.resolve(serialized) :
@@ -73,20 +74,21 @@ class GameScreen extends Container {
       if (gameState.spawn) {
         this.player.pos.copy(this.map.mapToPixelPos(gameState.spawn))
       }
-    }) 
+    })
   }
 
   setupLevel(json, parsed) {
     const { camera, controls, gameState } = this
-    debugger
+    // debugger
     // Map, player, camera
-    const map = new TiledLevel(game.w, game.h)
-    const player = new Player(controls, map)
+    const map = new TiledLevel(json, parsed)
+    const player = new Player(controls, map, gameState.hp)
     player.pos.x = map.spawns.player.x
     player.pos.y = map.spawns.player.y
 
     camera.worldSize = { w: map.w, h: map.h }
     camera.setSubject(player)
+    // debugger
     
     /* this.map = camera.add(map)
     this.pickups = camera.add(new Container())
@@ -101,6 +103,7 @@ class GameScreen extends Container {
     this.baddies = camera.add(new Container())
     this.bullets = camera.add(new Container())
     this.fx = camera.add(new Container())
+    // debugger
 
     // Add level pickups
     map.spawns.pickups.forEach(p => {
@@ -117,7 +120,6 @@ class GameScreen extends Container {
       }
       b.pos.set(x, y)
     })
-    debugger
 
     // Bats
     // const baddies = new Container()
@@ -201,9 +203,17 @@ class GameScreen extends Container {
 
   update(dt, t) {
     const { controls, player, state } = this
-    const { READY, PLAYING, GAMEOVER } = states
+    const { LOADING, READY, PLAYING, GAMEOVER } = states
 
     switch (state.get()) {
+      case LOADING:
+        this.scoreText.text = '...'
+        if (this.loaded) {
+          state.set(READY)
+        } else {
+          console.log('not ready')
+        }
+        break;
       case READY:
         if (state.first) {
           this.scoreText.text = 'GET READY'

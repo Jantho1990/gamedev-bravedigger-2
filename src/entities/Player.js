@@ -20,7 +20,7 @@ let dbgFirst = true
 let dbgCt = 0
 
 class Player extends TileSprite {
-  constructor(controls, map) {
+  constructor(controls, map, hp = 5) {
     super(texture, 48, 48)
     this.controls = controls
     this.map = map
@@ -47,7 +47,7 @@ class Player extends TileSprite {
     this.wallTimer = 0
     this.releasedAction = false
 
-    this.hp = 5
+    this.hp = hp
     this.invincible = 0
 
     this.dir = -1

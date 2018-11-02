@@ -107,6 +107,11 @@ function useSeededRandom(blnUse = true) {
   random = blnUse ? randomSeeded : Math.random
 }
 
+function smoothstep(value, inf = 0, sup = 1) {
+  var x = clamp(lerp(value, inf, sup), 0, 1)
+  return x * x * (3 - 2 * x) // smooth formula
+}
+
 export default {
   angle,
   clamp,
@@ -120,5 +125,6 @@ export default {
   randOneFrom,
   randOneIn,
   randomSeed,
+  smoothstep,
   useSeededRandom
 }

@@ -35,19 +35,18 @@ class Game {
       let last = 0
       const loop = ms => {
         const { scene, renderer, fadeTime } = this
-        requestAnimationFrame(loop)
-
+        
         const t = ms / 1000 // Convert to seconds
         dt += Math.min(t - last, MAX_FRAME)
         last = t
-
+        
         while (dt >= STEP) {
           this.scene.update(STEP, t / MULTIPLIER)
           gameUpdate(STEP, t / MULTIPLIER)
           dt -= SPEED
         }
-        this.renderer.render(this.scene)
-
+        renderer.render(scene)
+        
         // Screen transition
         if (fadeTime > 0) {
           const { fadeDuration, destination } = this
@@ -60,11 +59,15 @@ class Game {
             this.destination = null
           }
         }
+
+        requestAnimationFrame(loop)
       }
+
       const init = ms => {
         last = ms / 1000
         requestAnimationFrame(loop)
       }
+
       requestAnimationFrame(init)
     })
   }

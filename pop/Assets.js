@@ -8,7 +8,7 @@ let total = 0
 
 function onAssetLoad(e) {
   if (completed) {
-    console.warn('Warning: asset defined after preload.', e.target)
+    console.warn('Warning: asset defined after preload.', e.target || e)
   }
 
   remaining--;

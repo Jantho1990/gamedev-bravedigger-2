@@ -1,4 +1,8 @@
 import TileMap from '../pop/TileMap'
+import tiledParser from '../pop/utils/tiledParser'
+import Texture from '../pop/Texture';
+
+const texture = new Texture("res/img/bravedigger-tiles.png")
 
 class TiledLevel extends TileMap {
   constructor(data, parsed) {
@@ -20,13 +24,13 @@ class TiledLevel extends TileMap {
     return {
       player: data.getObjectByName('Hero', true),
       baddies: [
-        ...data.getObjectByType('Ghost'),
-        ...data.getObjectByType('Spikes'),
-        ...data.getObjectByType('Bat'),
-        ...data.getObjectByType('Totem')
+        // ...data.getObjectsByType('Ghost'),
+        // ...data.getObjectsByType('Spikes'),
+        ...data.getObjectsByType('Bat'),
+        // ...data.getObjectsByType('Totem')
       ],
-      pickups: data.getObjectByType('Pickup'),
-      doors: data.getObjectsByType('Door')
+      pickups: data.getObjectsByType('Pickup'),
+      // doors: data.getObjectsByType('Door')
     }
   }
 

@@ -1,9 +1,10 @@
+let dbg = 0
 class KeyControls {
     constructor () {
         this.keys = {}
         // Bind event handlers
         document.addEventListener("keydown", e => {
-            if ([37,38,39,40].indexOf(e.which >= 0)) {
+            if ([37,38,39,40,32].indexOf(e.which >= 0)) {
                 e.preventDefault()
             }
             this.keys[e.which] = true
