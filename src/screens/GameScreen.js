@@ -39,6 +39,9 @@ class GameScreen extends Container {
     this.time = 0
 
     this.camera = this.add(new Camera(null, { w: game.w, h: game.h }))
+    this.hud = this.add(new Container())
+
+    this.addAfter = []
 
     /* const camera = new Camera(
       player,
@@ -62,7 +65,7 @@ class GameScreen extends Container {
     }
 
     // Either load from url or memory
-    const levelUrl = `res/levels/l${gameState.level}a.json?c=${Date.now()}`
+    const levelUrl = `res/levels/level${gameState.level}.json?c=${Date.now()}`
     const serialized = gameState.data[gameState.level]
     const level = serialized ?
       Promise.resolve(serialized) :
@@ -235,9 +238,15 @@ class GameScreen extends Container {
 
         // Wait for space bar to restart
         if (player.gameOver && controls.keys.action) {
-          this.onGameOver()
+          this.screens.onReset()
         }
         break
+    }
+
+    // TMP hack! Will explain soon... (he did not :/)
+    if (this.addAfter.length) {
+      this.addAfter.forEach(b => this.baddies.add(b));
+      this.addAfter = [];
     }
 
     state.update(dt)

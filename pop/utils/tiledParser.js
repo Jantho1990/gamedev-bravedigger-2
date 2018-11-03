@@ -57,15 +57,17 @@ function tiledParser(json) {
   // Map the Tiled level data to our game format.
   const tileset = getTileset(0)
   const props = tileset.tileproperties // extra tile properties: walkable, clouds
-  const tilesPerRow = Math.floor(tileset.imageWidth / tileset.tilewidth)
+  const tilesPerRow = Math.floor(tileset.imagewidth / tileset.tilewidth)
   // debugger
   const tiles = levelLayer.data.map(cell => {
     const idx = cell - tileset.firstgid // get correct Tiled offset
+    // debugger
     return Object.assign({}, props && props[idx] || {}, {
       x: idx % tilesPerRow,
       y: Math.floor(idx / tilesPerRow)
     })
   })
+  // debugger
 
   return {
     tileW,

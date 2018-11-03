@@ -11,20 +11,30 @@
  <tile id="15" type="Ghost"/>
  <tile id="16" type="Spikes"/>
  <tile id="17" type="Spikes"/>
+ <tile id="20">
+  <properties>
+   <property name="walkable" type="bool" value="true"/>
+  </properties>
+ </tile>
+ <tile id="21">
+  <properties>
+   <property name="walkable" type="bool" value="true"/>
+  </properties>
+ </tile>
  <tile id="25" type="Pickup"/>
  <tile id="32">
   <properties>
-   <property name="walkable" type="bool" value="true"/>
+   <property name="walkable" type="bool" value="false"/>
   </properties>
  </tile>
  <tile id="33">
   <properties>
-   <property name="walkable" type="bool" value="true"/>
+   <property name="walkable" type="bool" value="false"/>
   </properties>
  </tile>
  <tile id="34">
   <properties>
-   <property name="walkable" type="bool" value="true"/>
+   <property name="walkable" type="bool" value="false"/>
   </properties>
  </tile>
  <tile id="50">
