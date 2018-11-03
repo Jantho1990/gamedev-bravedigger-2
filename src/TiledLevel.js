@@ -39,7 +39,9 @@ class TiledLevel extends TileMap {
       // not a bridge or disappearing
       return
     }
-    const getTile = name => this.data.tiles.find(tile => tile.id === name)
+    const getTileByType = name => {
+      return this.data.tiles.find(tile => Object.keys(tile).find(prop => prop === name) !== undefined)
+    }
 
     t.frame.counter = duration // how long until tile disappears
     t._update = t.update
@@ -48,11 +50,12 @@ class TiledLevel extends TileMap {
       this._update.call(this, dt, t)
       frame.counter -= dt
       if (frame.counter < duration * 0.33) {
-        frame.x = getTile('bridge').x + 1
+        // debugger
+        frame.x = 6 // getTileByType('bridge').x + 1
       }
       if (frame.counter <= 0) {
         // switch to empty tile
-        this.frame = Object.assign({}, getTemplate('empty'))
+        this.frame = { x: 0, y: 2, walkable: true } // Object.assign({}, getTemplate('empty'))
         this.update = this._update
         delete this._update
       }

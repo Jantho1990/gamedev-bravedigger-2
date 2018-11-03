@@ -43,15 +43,15 @@
    <property name="walkable" type="bool" value="true"/>
   </properties>
  </tile>
- <tile id="55">
+ <tile id="55" type="bridge">
   <properties>
    <property name="bridge" type="bool" value="true"/>
-   <property name="walkable" type="bool" value="true"/>
+   <property name="walkable" type="bool" value="false"/>
   </properties>
  </tile>
- <tile id="56">
+ <tile id="56" type="bridge">
   <properties>
-   <property name="walkable" type="bool" value="true"/>
+   <property name="walkable" type="bool" value="false"/>
   </properties>
  </tile>
 </tileset>

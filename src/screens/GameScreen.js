@@ -205,8 +205,9 @@ class GameScreen extends Container {
   }
 
   update(dt, t) {
-    const { controls, player, state } = this
+    const { controls, player, state, game } = this
     const { LOADING, READY, PLAYING, GAMEOVER } = states
+    // console.log(game.speed)
 
     switch (state.get()) {
       case LOADING:
@@ -271,22 +272,12 @@ class GameScreen extends Container {
     if (pickups.children.length === 1) {
       camera.shake(16, 3)
       camera.flash()
-      this.populate()
+      // this.populate()
       this.score += 5
 
       // Coin Particles
       this.ce = this.fx.add(new ParticleEmitter(this.score, coin, { life: 2, gravity: -20 }))
       this.ce.play(player.pos)
-
-      // spawn one coin for each score point
-      /* for (let i = 0; i < this.score; i++) {
-        this.add(new Timer(0.1, null, () => {
-          const newCoin = this.add(new OneUp(coin))
-          newCoin.pos.copy(player.pos)
-          console.log('one upped', i)
-          alert('stop')
-        }, i * 0.1))
-      } */
     }
 
     this.scoreText.text = this.score
