@@ -3,9 +3,9 @@ import CanvasRenderer from './renderer/CanvasRenderer'
 import Assets from './Assets'
 
 const STEP = 1 / 60
-const MAX_FRAME = STEP * 5
 let MULTIPLIER = 1
 let SPEED = STEP * MULTIPLIER
+const MAX_FRAME = SPEED * 5
 
 class Game {
   constructor(w, h, parent = "#board") {
@@ -40,7 +40,7 @@ class Game {
         dt += Math.min(t - last, MAX_FRAME)
         last = t
         
-        while (dt >= STEP) {
+        while (dt >= SPEED) {
           this.scene.update(STEP, t / MULTIPLIER)
           gameUpdate(STEP, t / MULTIPLIER)
           dt -= SPEED

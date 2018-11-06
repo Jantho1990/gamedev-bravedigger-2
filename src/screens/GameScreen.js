@@ -33,6 +33,7 @@ class GameScreen extends Container {
     this.controls = controls
     this.gameState = gameState
     this.screens = screens
+    this.game.speed = 1.5
 
     this.state = new State(LOADING)
 

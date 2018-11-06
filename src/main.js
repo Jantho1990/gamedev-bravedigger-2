@@ -3,7 +3,7 @@ const { Game, KeyControls, entity, math, Text } = pop
 import GameScreen from './screens/GameScreen'
 import TitleScreen from './screens/TitleScreen';
 
-const game = new Game(48 * 25, 48 * 16)
+const game = new Game(48 * 15, 48 * 9)
 const controls = {
   keys: new KeyControls()
 }
